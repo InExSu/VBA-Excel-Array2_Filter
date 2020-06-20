@@ -4,7 +4,7 @@ VBA Excel Filter a two-dimensional array by different columns with a variety of
 # How to use?
 The A2_Filter_AND function waits for two arguments:
 - a two-dimensional array with data to be filtered
-- an array of criteria.
+- a two-dimensional array of criteria.
  
  Array of criteria = two-dimensional array.
 in column 1 - column numbers
