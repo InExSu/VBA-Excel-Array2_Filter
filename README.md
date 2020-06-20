@@ -23,9 +23,7 @@ in column 3 - filtration method (with a sign of case accounting)
 Function A2_Filter_AND Returns the array two-dimensional filtered.
 
 # Tested 
-![RubberDuck VBA](https://user-images.githubusercontent.com/5751684/48656196-a507af80-e9ef-11e8-9c09-1ce3c619c019.png) (https://github.com/rubberduck-vba/Rubberduck)
+[![Rubberduck](//https://user-images.githubusercontent.com/5751684/48656196-a507af80-e9ef-11e8-9c09-1ce3c619c019.png/150x100)](https://github.com/rubberduck-vba/Rubberduck/)
 
 # Plans
 Implement date and number filters.
-
-Translated with www.DeepL.com/Translator (free version)
