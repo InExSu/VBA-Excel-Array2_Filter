@@ -10,36 +10,11 @@ Public Const EMPTY_HIDE As String = "EMPTY_HIDE" ' пустые скрыть
 ' ToDo: сделать для дат и чисел
 
 
-Sub A2_Filter_AND_FW_Live()
-   Dim _
-      a2_Data() As Variant, _
-      a2_Crit() As Variant
-   
-   a2_Data = ActiveSheet.UsedRange.Value
-   
-   ReDim a2_Crit(1 To 2, 1 To 3)
-   '   a2_Crit(1, 1) = 1
-   '   a2_Crit(1, 2) = "Code"
-   '   a2_Crit(1, 3) = "EQUAL_TEXT"
-   '   a2_Crit(2, 1) = 1
-   '   a2_Crit(2, 2) = "Date"
-   '   a2_Crit(2, 3) = "EQUAL_TEXT"
-   
-   a2_Crit(1, 1) = 3
-   a2_Crit(1, 2) = "Work"
-   a2_Crit(1, 3) = "CONTA_TEXT"
-   
-   a2_Data = A2_Filter_AND(a2_Data, a2_Crit)
-   
- MsgBox A2_2_String(a2_Data)
-   
-End Sub
-
-
 Function A2_Filter_AND( _
    a2_Data() As Variant, _
    a2_Crit() As Variant) _
    As Variant()
+   
    ' test yes
    ' Фильтрация массива двумерного по разным столбцам, по нескольким критериям
    ' предикат И - должны совпасть критерии во всех указанных массивах
@@ -61,6 +36,8 @@ Function Collection_Rows_Copy( _
    a2_Data() As Variant, _
    a2_Crit() As Variant) _
    As Collection
+   
+   ' test yes
    ' коллекция номеров строк, которые нужно копировать
    'Массив критериев:
    'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
@@ -91,6 +68,8 @@ Function Row_Meets_CriteriaS_AND( _
   row_Data As Long, _
   a2_Crit() As Variant) _
   As Boolean
+   
+  ' test yes
   ' соответствует ли строка критериям (по столбцам)
   
   'Массив критериев:
@@ -149,9 +128,10 @@ End Function
 
 Function Element_Meet_CriteriaS( _
   element As Variant, _
-  column As Long, _
+  column_ As Long, _
   a2_Crit() As Variant) _
   As Boolean
+  
   ' test yes
   ' элемент должен соответствовать любому критерию
 
@@ -165,7 +145,7 @@ Function Element_Meet_CriteriaS( _
   For row_Crit = LBound(a2_Crit) To UBound(a2_Crit)
          
     '  если столбец совпадает в строке критерия
-    If column = a2_Crit(row_Crit, 1) Then
+    If column_ = a2_Crit(row_Crit, 1) Then
             
       ' если элемент массива
       If Criteria_Check( _
@@ -190,6 +170,7 @@ Function Criteria_Check( _
   a2_Crit() As Variant, _
   row_Crite As Long) _
   As Boolean
+  
   ' test yes
   ' совпадает ли элемент с критериями
 
@@ -261,7 +242,9 @@ End Function
 
 Function Option_Compare() _
    As String
+   
    ' вернуть название метода сравнения строк
+   
    If "z" = "Z" Then
       Option_Compare = "Text"
    Else
@@ -297,7 +280,6 @@ Function A2_Copy_Rows_Collection( _
             row
 
       Next
-  
    End If
    
    A2_Copy_Rows_Collection = a2_Dest
@@ -310,6 +292,7 @@ Sub A2_Row_Copy( _
    lRow_Sour As Long, _
    a2_Dest() As Variant, _
    lRow_Dest As Long)
+   
    ' test yes
    ' копировать строку из массива в массив
 
@@ -327,7 +310,8 @@ End Sub
 Function isArray_Bound( _
    a2() As Variant) _
    As Boolean
-   ' code test coverage
+
+   ' test yes
    ' проверка инициализации массива, isAx
  
    Dim var As Variant
@@ -390,6 +374,8 @@ Function String_Add_Symbols( _
    length As Long, _
    Optional symb As String = " ") _
    As String
+   
+   ' test yes
    ' нарастить строку символами до нужной длины
    
    Dim count As Long
