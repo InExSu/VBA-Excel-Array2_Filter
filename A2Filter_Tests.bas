@@ -1,6 +1,4 @@
-Attribute VB_Name = "A2Filter_Tests"
 Option Explicit
-'@IgnoreModule
 
 Option Private Module
 
@@ -37,70 +35,72 @@ End Sub
 
 '@TestMethod
 Public Sub A2_Filter_AND_TestMethod()
-   '   On Error GoTo TestFail
-   Dim varReturn() As Variant
-   Dim a2_Data() As Variant
-   Dim a2_Crit() As Variant
+  '   On Error GoTo TestFail
+  Dim varReturn() As Variant
+  Dim a2_Data() As Variant
+  Dim a2_Crit() As Variant
   
-   ' в массиве данных 1 строка, в критериях 1 условие
-   ReDim a2_Data(1 To 1, 1 To 1)
-   a2_Data(1, 1) = "11"
+  ' РџРѕРєР° СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ СЃ РѕРґРёРЅРѕС‡РЅС‹РјРё РєСЂРёС‚РµСЂСЏРјРё
+  ' ToDo: РџРµСЂРµРґРµР»Р°С‚СЊ С‚РµСЃС‚С‹ РґР»СЏ РјРЅРѕРіРёС…
+  ' РІ РјР°СЃСЃРёРІРµ РґР°РЅРЅС‹С… 1 СЃС‚СЂРѕРєР°, РІ РєСЂРёС‚РµСЂРёСЏС… 1 СѓСЃР»РѕРІРёРµ
+  ReDim a2_Data(1 To 1, 1 To 1)
+  a2_Data(1, 1) = "11"
 
-   ReDim a2_Crit(1 To 2, 1 To 3)
-   a2_Crit(1, 1) = 1 ' столбец
-   a2_Crit(1, 2) = a2_Data(1, 1) ' критерий
-   a2_Crit(1, 3) = "EQUAL_TEXT" ' метод фильтрации
+  ReDim a2_Crit(1 To 2, 1 To 3)
+  a2_Crit(1, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(1, 2) = a2_Data(1, 1) ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(1, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
   
-   varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
-   If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
+  If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
 
-   a2_Crit(1, 2) = "0" ' критерий
-   varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
-   If isArray_Bound(varReturn) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  a2_Crit(1, 2) = "0" ' РєСЂРёС‚РµСЂРёР№
+  varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
+  If isArray_Bound(varReturn) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
 
-   ' в массиве данных 2 строки, в критериях 2 условия
-   ReDim a2_Data(1 To 2, 1 To 1)
-   a2_Data(1, 1) = "11"
-   a2_Data(2, 1) = "21"
+  ' РІ РјР°СЃСЃРёРІРµ РґР°РЅРЅС‹С… 2 СЃС‚СЂРѕРєРё, РІ РєСЂРёС‚РµСЂРёСЏС… 2 СѓСЃР»РѕРІРёСЏ
+  ReDim a2_Data(1 To 2, 1 To 1)
+  a2_Data(1, 1) = "11"
+  a2_Data(2, 1) = "21"
 
-   ReDim a2_Crit(1 To 2, 1 To 3)
-   a2_Crit(1, 1) = 1 ' столбец
-   a2_Crit(1, 2) = a2_Data(1, 1) ' критерий
-   a2_Crit(1, 3) = "EQUAL_TEXT" ' метод фильтрации
-   a2_Crit(2, 1) = 1 ' столбец
-   a2_Crit(2, 2) = a2_Data(2, 1) ' критерий
-   a2_Crit(2, 3) = "EQUAL_TEXT" ' метод фильтрации
+  ReDim a2_Crit(1 To 2, 1 To 3)
+  a2_Crit(1, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(1, 2) = a2_Data(1, 1) ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(1, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
+  a2_Crit(2, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(2, 2) = a2_Data(2, 1) ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(2, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
   
-   varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
-   If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
-   If varReturn(2, 1) <> a2_Data(2, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
+  If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  If varReturn(2, 1) <> a2_Data(2, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
 
-   ' 3 строки данных
-   ReDim a2_Data(1 To 3, 1 To 3)
-   a2_Data(1, 1) = "11": a2_Data(1, 2) = "12": a2_Data(1, 3) = "13"
-   a2_Data(2, 1) = "21": a2_Data(2, 2) = "22": a2_Data(2, 3) = "23"
-   a2_Data(3, 1) = "31": a2_Data(3, 2) = "32": a2_Data(3, 3) = "33"
+  ' 3 СЃС‚СЂРѕРєРё РґР°РЅРЅС‹С…
+  ReDim a2_Data(1 To 3, 1 To 3)
+  a2_Data(1, 1) = "11": a2_Data(1, 2) = "12": a2_Data(1, 3) = "13"
+  a2_Data(2, 1) = "21": a2_Data(2, 2) = "22": a2_Data(2, 3) = "23"
+  a2_Data(3, 1) = "31": a2_Data(3, 2) = "32": a2_Data(3, 3) = "33"
    
-   ReDim a2_Crit(1 To 2, 1 To 3)
-   a2_Crit(1, 1) = 1 ' столбец
-   a2_Crit(1, 2) = a2_Data(3, 1) ' критерий
-   a2_Crit(1, 3) = "EQUAL_TEXT" ' метод фильтрации
+  ReDim a2_Crit(1 To 2, 1 To 3)
+  a2_Crit(1, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(1, 2) = a2_Data(3, 1) ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(1, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
    
-   varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
-   If varReturn(1, 1) <> a2_Data(3, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
+  If varReturn(1, 1) <> a2_Data(3, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
    
-   a2_Crit(2, 1) = 1 ' столбец
-   a2_Crit(2, 2) = a2_Data(1, 1) ' критерий
-   a2_Crit(2, 3) = "EQUAL_TEXT" ' метод фильтрации
+  a2_Crit(2, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(2, 2) = a2_Data(1, 1) ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(2, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
    
-   varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
-   If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
-   If varReturn(2, 1) <> a2_Data(3, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  varReturn = A2_Filter_AND(a2_Data(), a2_Crit())
+  If varReturn(1, 1) <> a2_Data(1, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
+  If varReturn(2, 1) <> a2_Data(3, 1) Then Err.Raise 567, "A2_Filter_AND(a2_Data(),a2_Crit())"
    
 TestExit:
-   Exit Sub
+  Exit Sub
 TestFail:
-   Assert.Fail "Test error: #" & Err.Number & " - " & Err.Description
+  Assert.Fail "Test error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
@@ -126,7 +126,7 @@ Public Sub Collection_Rows_Copy_TestMethod()
   On Error GoTo TestFail
   Dim a2_Data() As Variant
   Dim a2_Crit() As Variant
-  ' ToDo: Продолжить
+
   a2_Data = Mock.G_a2
   a2_Crit = Mock.G_a2
   Dim varReturn As Collection
@@ -149,22 +149,22 @@ Public Sub Criteria_Check_TestMethod()
   Dim var As Variant
   Dim a2_Crit() As Variant
   Dim row_Crit_ As Long
-  'Массив критериев:
-  'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
+  'РњР°СЃСЃРёРІ РєСЂРёС‚РµСЂРёРµРІ:
+  'РЎС‚РѕР»Р±РµС† РЅРѕРјРµСЂ, РљСЂРёС‚РµСЂРёР№, РњРµС‚РѕРґ С„РёР»СЊС‚Р°С†РёРё СЃ СѓРєР°Р·Р°РЅРёРµРј СѓС‡РµС‚Р° СЂРµРіРёСЃС‚СЂР°
   ReDim a2_Crit(1 To 2, 1 To 3)
   row_Crit_ = 2
-  '  a2_Crit(row_Crit_, 1) = 9 ' в этой процедуре не нужен
+  '  a2_Crit(row_Crit_, 1) = 9 ' РІ СЌС‚РѕР№ РїСЂРѕС†РµРґСѓСЂРµ РЅРµ РЅСѓР¶РµРЅ
   
   var = "z"
   a2_Crit(row_Crit_, 2) = var
-  a2_Crit(row_Crit_, 3) = "EQUAL_TEXT" ' сравнить с учётом регистра
+  a2_Crit(row_Crit_, 3) = "EQUAL_TEXT" ' СЃСЂР°РІРЅРёС‚СЊ СЃ СѓС‡С‘С‚РѕРј СЂРµРіРёСЃС‚СЂР°
   
   varReturn = Criteria_Check(var, a2_Crit(), row_Crit_)
   If varReturn = False Then Err.Raise 567, "Criteria_Check(var,a2_Crit(),row_Crit_)"
   
   var = "z"
   a2_Crit(row_Crit_, 2) = "w"
-  a2_Crit(row_Crit_, 3) = "EQUAL_TEXT" ' сравнить с учётом регистра
+  a2_Crit(row_Crit_, 3) = "EQUAL_TEXT" ' СЃСЂР°РІРЅРёС‚СЊ СЃ СѓС‡С‘С‚РѕРј СЂРµРіРёСЃС‚СЂР°
   
   varReturn = Criteria_Check(var, a2_Crit(), row_Crit_)
   If varReturn Then Err.Raise 567, "Criteria_Check(var,a2_Crit(),row_Crit_)"
@@ -202,8 +202,8 @@ End Sub
 
 
 '@TestMethod
-Public Sub Row_Meets_Criteria_AND_TestMethod()
-  On Error GoTo TestFail
+Public Sub Row_Meets_CriteriaS_AND_TestMethod()
+'  On Error GoTo TestFail
   Dim a2_Data() As Variant
   Dim row_Data As Long
   Dim a2_Crit() As Variant
@@ -220,13 +220,13 @@ Public Sub Row_Meets_Criteria_AND_TestMethod()
 
   row_Data = 3
 
-  ReDim a2_Crit(1 To 2, 1 To 3)
-  a2_Crit(1, 1) = 1 ' столбец
-  a2_Crit(1, 2) = "31" ' критерий
-  a2_Crit(1, 3) = "EQUAL_TEXT" ' метод фильтрации
+  ReDim a2_Crit(1 To 1, 1 To 3)
+  a2_Crit(1, 1) = 1 ' СЃС‚РѕР»Р±РµС†
+  a2_Crit(1, 2) = "31" ' РєСЂРёС‚РµСЂРёР№
+  a2_Crit(1, 3) = "EQUAL_TEXT" ' РјРµС‚РѕРґ С„РёР»СЊС‚СЂР°С†РёРё
   Dim varReturn As Boolean
-  varReturn = Row_Meets_Criteria_AND(a2_Data(), row_Data, a2_Crit())
-  If varReturn = False Then Err.Raise 567, "Row_Meets_Criteria_AND(a2_Data(),row_Data,a2_Crit())"
+  varReturn = Row_Meets_CriteriaS_AND(a2_Data(), row_Data, a2_Crit())
+  If varReturn = False Then Err.Raise 567, "Row_Meets_CriteriaS_AND(a2_Data(),row_Data,a2_Crit())"
 
 TestExit:
   Exit Sub
@@ -289,5 +289,56 @@ TestExit:
 TestFail:
    Mock.wb.Close False
    Assert.Fail "Test error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub Element_Meet_CriteriaS_TestMethod()
+  On Error GoTo TestFail
+  Dim varReturn As Boolean
+  Dim element As Variant
+  Dim column As Long
+  Dim a2_Crit() As Variant
+  element = Mock.G_Variant
+  a2_Crit = A2_Crit_Booking
+  column = a2_Crit(1, 1)
+  varReturn = Element_Meet_CriteriaS(element, column, a2_Crit())
+  If varReturn Then Err.Raise 567, "Element_Meet_CriteriaS(element,column,a2_Crit())"
+
+  element = Mock.G_Variant
+  a2_Crit(1, 2) = element
+  varReturn = Element_Meet_CriteriaS(element, column, a2_Crit())
+  If varReturn = False Then Err.Raise 567, "Element_Meet_CriteriaS(element,column,a2_Crit())"
+
+TestExit:
+  Mock.wb.Close False
+  Exit Sub
+TestFail:
+  Mock.wb.Close False
+  Assert.Fail "Test error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+
+'@TestMethod
+Public Sub Column_in_Criterias_TestMethod()
+  On Error GoTo TestFail
+  Dim varReturn As Boolean
+  Dim column As Long
+  Dim a2_Crit() As Variant
+  ReDim a2_Crit(1 To 2, 1 To 1)
+  
+  column = 1
+  varReturn = Column_in_Criterias(column, a2_Crit())
+  If varReturn Then Err.Raise 567, "Column_in_Criterias(column,a2_Crit())"
+
+  a2_Crit(1, 1) = 1
+  varReturn = Column_in_Criterias(column, a2_Crit())
+  If varReturn = False Then Err.Raise 567, "Column_in_Criterias(column,a2_Crit())"
+
+TestExit:
+  Exit Sub
+TestFail:
+  Assert.Fail "Test error: #" & Err.Number & " - " & Err.Description
 End Sub
 
