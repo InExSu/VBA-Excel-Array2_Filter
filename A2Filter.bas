@@ -5,6 +5,8 @@ Public Const EQUAL_TEXT As String = "EQUAL_TEXT" ' строки равны Бе�
 Public Const EQUAL_BINA As String = "EQUAL_BINA" ' строки равны С   учётом регистра
 Public Const CONTA_TEXT As String = "CONTA_TEXT" ' строка содержит БЕЗ учёта  регистра
 Public Const CONTA_BINA As String = "CONTA_BINA" ' строка содержит С   учётом регистра
+Public Const EMPTY_SHOW As String = "EMPTY_SHOW" ' пустые показать
+Public Const EMPTY_HIDE As String = "EMPTY_HIDE" ' пустые скрыть
 ' ToDo: сделать для дат и чисел
 
 
@@ -42,9 +44,6 @@ Function A2_Filter_AND( _
    ' Фильтрация массива двумерного по разным столбцам, по нескольким критериям
    ' предикат И - должны совпасть критерии во всех указанных массивах
   
-   ' ToDo: Продолжить сделать A2_Filter_OR - фильтровать по предикату ИЛИ -
-   ' для каждого столбца проверять критерии отдельно (будет долго)
-  
    'Массив критериев:
    'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
 
@@ -73,7 +72,7 @@ Function Collection_Rows_Copy( _
    ' проход по строкам массива с данными
    For row_Data = LBound(a2_Data) To UBound(a2_Data)
       
-      If Row_Meets_Criteria_AND( _
+      If Row_Meets_CriteriaS_AND( _
          a2_Data, row_Data, _
          a2_Crit) Then
           
@@ -87,95 +86,155 @@ Function Collection_Rows_Copy( _
 End Function
 
 
-Function Row_Meets_Criteria_AND( _
-   a2_Data() As Variant, _
-   row_Data As Long, _
-   a2_Crit() As Variant) _
-   As Boolean
-   ' соответствует ли строка строке в массиве критериев
+Function Row_Meets_CriteriaS_AND( _
+  a2_Data() As Variant, _
+  row_Data As Long, _
+  a2_Crit() As Variant) _
+  As Boolean
+  ' соответствует ли строка критериям (по столбцам)
   
-   'Массив критериев:
-   'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
-
-   Dim _
-      row_Crit As Long, _
-      col_Data As Long, _
-      bingo  As Boolean
+  'Массив критериев:
+  'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
   
-   For row_Crit = LBound(a2_Crit) To UBound(a2_Crit)
-      For col_Data = LBound(a2_Data, 2) To UBound(a2_Data, 2)
-         
-         '  если столбец совпадает в строке критерия
-         If col_Data = a2_Crit(row_Crit, 1) Then
-            bingo = True
-            
-            ' если элемент массива НЕ проходит критерии
-            If Criteria_Check( _
-               a2_Data(row_Data, col_Data), _
-               a2_Crit, row_Crit) = False Then
-               
-               bingo = False
-               Exit For
+  Dim _
+    bingo_  As Boolean, _
+    column As Long
 
-            End If
-         End If
-      Next col_Data
+  bingo_ = True
+
+  ' проход по строке
+  For column = LBound(a2_Data, 2) To UBound(a2_Data, 2)
       
-      'одна строка критерия совпала - значит строка данных хорошая
-      If bingo Then Exit For
+    If Column_in_Criterias(column, a2_Crit) Then
+      
+      If Element_Meet_CriteriaS( _
+        a2_Data(row_Data, column), column, a2_Crit) = False Then
+      
+        bingo_ = False
+        Exit For
    
-   Next row_Crit
+      End If
+    End If
+  Next column
   
-   Row_Meets_Criteria_AND = bingo
+  Row_Meets_CriteriaS_AND = bingo_
   
 End Function
 
 
-Function Criteria_Check( _
-   var_Desti As Variant, _
-   a2_Crit() As Variant, _
-   row_Crite As Long) _
-   As Boolean
-   ' test yes
-   ' совпадает ли элемент с критериями
+Function Column_in_Criterias( _
+  column As Long, _
+  a2_Crit() As Variant) _
+  As Boolean
+  
+  ' test yes
+  ' есть ли в критериях номер столбца
+  ' номера столбцов в 1 столбце a2_Crit
 
-   'Массив критериев:
-   'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
+  Dim _
+    row As Long, _
+    bingo As Boolean
+
+  For row = LBound(a2_Crit) To UBound(a2_Crit)
+    If a2_Crit(row, 1) = column Then
+      bingo = True
+      Exit For
+    End If
+  Next row
   
-   Dim _
-      bingo As Boolean, _
-      vCrit As Variant
+  Column_in_Criterias = bingo
   
-   vCrit = a2_Crit(row_Crite, 2)
+End Function
+
+
+Function Element_Meet_CriteriaS( _
+  element As Variant, _
+  column As Long, _
+  a2_Crit() As Variant) _
+  As Boolean
+  ' test yes
+  ' элемент должен соответствовать любому критерию
+
+  'Массив критериев:
+  'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
+
+  Dim _
+    row_Crit As Long, _
+    bingo As Boolean
+
+  For row_Crit = LBound(a2_Crit) To UBound(a2_Crit)
+         
+    '  если столбец совпадает в строке критерия
+    If column = a2_Crit(row_Crit, 1) Then
+            
+      ' если элемент массива
+      If Criteria_Check( _
+        element, _
+        a2_Crit, row_Crit) Then
+          
+        ' любой из критериев подошёл
+        bingo = True
+        Exit For
+
+      End If
+    End If
+  Next row_Crit
   
-   '   Debug.Assert vCrit <> "11"
-   '   Debug.Assert vCrit <> "31"
+  Element_Meet_CriteriaS = bingo
+
+End Function
+
+
+Function Criteria_Check( _
+  var_Desti As Variant, _
+  a2_Crit() As Variant, _
+  row_Crite As Long) _
+  As Boolean
+  ' test yes
+  ' совпадает ли элемент с критериями
+
+  'Массив критериев:
+  'Столбец номер, Критерий, Метод фильтации с указанием учета регистра
   
-   Select Case LCase$(a2_Crit(row_Crite, 3))
+  Dim _
+    bingo As Boolean, _
+    vCrit As Variant
+  
+  vCrit = a2_Crit(row_Crite, 2)
+  
+  If vCrit = "" Then
+    
+    If a2_Crit(row_Crite, 3) = EMPTY_SHOW Then bingo = True
+    If a2_Crit(row_Crite, 3) = EMPTY_HIDE Then bingo = False
+  
+  Else
+
+    Select Case LCase$(a2_Crit(row_Crite, 3))
       
       Case LCase$(EQUAL_TEXT)
-         If LCase$(var_Desti) = LCase$(vCrit) Then
-            bingo = True
-         End If
+        If LCase$(var_Desti) = LCase$(vCrit) Then
+          bingo = True
+        End If
      
       Case LCase$(EQUAL_BINA)
-         If var_Desti = vCrit Then
-            bingo = True
-         End If
+        If var_Desti = vCrit Then
+          bingo = True
+        End If
       
       Case LCase$(CONTA_TEXT)
-         If InStr(1, var_Desti, vCrit, vbTextCompare) > 0 Then
-            bingo = True
-         End If
+        If InStr(1, var_Desti, vCrit, vbTextCompare) > 0 Then
+          bingo = True
+        End If
       
       Case LCase$(CONTA_BINA)
-         If InStr(var_Desti, vCrit) > 0 Then
-            bingo = True
-         End If
+        If InStr(var_Desti, vCrit) > 0 Then
+          bingo = True
+        End If
    
-   End Select
+    End Select
+  End If
   
-   Criteria_Check = bingo
+  Criteria_Check = bingo
   
 End Function
 
@@ -298,7 +357,9 @@ Function A2_2_String( _
    Optional separato As String = " | ", _
    Optional s_Add As String = "_") _
    As String
+   
    ' вернуть массив в виде строки-таблицы
+   ' можно выводить через msgbox
 
    Dim sVal As String, _
       sAdd As String
